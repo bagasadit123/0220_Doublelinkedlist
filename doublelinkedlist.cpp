@@ -35,7 +35,7 @@ public:
         newNode->noMhs = nim;
 
         // Step 3: Insert at beginning if list is empty or nim is smallest
-         if (START == NULL || nim <= START->noMhs)
+        if (START == NULL || nim <= START->noMhs)
         {
             if (START != NULL && nim == START->noMhs)
             {
@@ -51,11 +51,10 @@ public:
 
             // Step 6: newNode.prev = NULL
             newNode->prev = NULL;
-                   // Step 7: START = newNode
+            // Step 7: START = newNode
             START = newNode;
             return;
         }
-        
         // insert in between node
         // Step 8: Locate position for insertion
         Node *current = START;
@@ -89,11 +88,41 @@ public:
             return;
         }
 
-   
         cout << "\nEnter the roll number of the student whose record is to be deleted: ";
         int rollNo;
         cin >> rollNo;
 
         Node *current = START;
+
+        // Step 1: Traverse the list to find the node
+        while (current != NULL && current->noMhs != rollNo)
+            current = current->next;
+
+        if (current == NULL)
+        {
+            cout << "Record not found" << endl;
+            return;
+        }
+
+        // Step 2: If node is at the beginning
+        if (current == START)
+        {
+            START = current->next; // Step 2a: START = START.next
+            if (START != NULL)
+                START->prev = NULL; // Step 2b: START.prev = NULL
+        }
+        else
+        {
+            // Step 3: Link previous node to next of current
+            current->prev->next = current->next;
+
+            // Step 4: If current is not the last node
+            if (current->next != NULL)
+                current->next->prev = current->prev;
+        }
+
+        // Step 5: Delete the node
+        delete current;
+        cout << "Record with roll number " << rollNo << " deleted" << endl;
     }
 }
